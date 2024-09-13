@@ -1,4 +1,4 @@
-eCommerce Backend API
+ECommerce Backend API
 This is a backend API for an eCommerce application built with Node.js, Express, and MongoDB. It handles user authentication, product management, order handling, and more.
 
 Features
@@ -15,7 +15,7 @@ Node.js
 MongoDB
 Installation
 1. Clone the repository:
-git clone https://github.com/yourusername/ecommerce-backend.git
+git clone https://github.com/Rahull-Adk/Ecommerce.git
 cd ecommerce-backend
 
 2. Install dependencies
