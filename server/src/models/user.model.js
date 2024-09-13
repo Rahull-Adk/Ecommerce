@@ -17,6 +17,14 @@ const userSchema = new Schema(
       lowercase: true,
       unique: true,
     },
+    fullName: {
+      type: String,
+      required: true,
+    },
+    avatar: {
+      type: String,
+      // required: true,
+    },
     password: {
       type: String,
       required: true,
@@ -39,14 +47,14 @@ userSchema.pre("save", async function (next) {
   this.password = hashPassword;
 });
 
-userSchema.meethods("comparePassword", async function (password) {
+userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
-});
+};
 
-userSchema.methods("generateToken", function () {
+userSchema.methods.generateToken = function () {
   return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE,
   });
-});
+};
 
 export const User = mongoose.model("User", userSchema);
