@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./src/routes/auth.route.js";
+import userRouter from "./src/routes/user.route.js";
 
 export const app = express();
 app.use(express.json({ limit: "5mb" }));
@@ -12,3 +13,4 @@ app.use(cookieParser());
 // routes
 
 app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
