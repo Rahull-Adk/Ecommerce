@@ -6,7 +6,9 @@ import {
   createProduct,
   deleteProduct,
   getAllProducts,
+  getCategoryProduct,
   getSingleProduct,
+  reviewProducts,
   updateProduct,
 } from "../controllers/product.controller.js";
 
@@ -15,12 +17,13 @@ const router = Router();
 router
   .route("/")
   .get(getAllProducts)
-  .post(secureRoute, upload.single("image"), adminCheck, createProduct);
-
+  .post(secureRoute, upload.array("images", 10), adminCheck, createProduct);
+router.get("/category/:category", getCategoryProduct);
 router
   .route("/:id")
+  .post(secureRoute, reviewProducts)
   .get(getSingleProduct)
-  .put(secureRoute, adminCheck, upload.single("image"), updateProduct)
+  .put(secureRoute, adminCheck, upload.array("images", 10), updateProduct)
   .delete(secureRoute, adminCheck, deleteProduct);
 
 export default router;

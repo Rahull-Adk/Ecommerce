@@ -24,11 +24,6 @@ const cardSchema = new Schema(
       type: Number,
       required: true,
     },
-    status: {
-      type: String,
-      enum: ["pending", "shipped", "delivered"],
-      default: "pending",
-    },
   },
   { timestamps: true }
 );
