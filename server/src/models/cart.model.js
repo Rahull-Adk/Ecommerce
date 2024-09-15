@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const cardSchema = new Schema(
+const cartSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -18,14 +18,19 @@ const cardSchema = new Schema(
           type: Number,
           required: true,
         },
+        price: {
+          type: Number,
+          required: true,
+        },
       },
     ],
     totalAmount: {
       type: Number,
       required: true,
+      default: 0,
     },
   },
   { timestamps: true }
 );
 
-export const Order = mongoose.model("Order", orderSchema);
+export const Cart = mongoose.models.Card || mongoose.model("Cart", cartSchema);
