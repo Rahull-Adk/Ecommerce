@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
+  faCaretDown,
   faChevronDown,
   faList,
   faMagnifyingGlass,
@@ -14,6 +15,7 @@ import { useHandleSearch } from "../hooks/useHandleSearch";
 import { useHandleMenu } from "../hooks/useHandleMenu";
 import { useHandleChevronDown } from "../hooks/useHandleChevronDown";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import Link from "next/link";
 
 interface IMenu {
   id: string;
@@ -32,10 +34,10 @@ const Navbar = () => {
 
   return (
     <div className='w-full relative z-10 h-screen '>
-      <div className='w-full h-14 flex justify-between items-center sm:justify-around'>
-        <div className='flex space-x-4 sm:flex-row-reverse items-center max-sm:pl-6'>
+      <div className='w-full h-14 flex justify-between items-center sm:justify-evenly '>
+        <div className='flex sm:space-x-4 sm:flex-row-reverse items-center sm:pl-6'>
           <div
-            className='flex items-center space-x-1 px-4 sm:hover:bg-secondary py-2 mx-2 rounded-md'
+            className='flex items-center space-x-1 sm:px-4 px-2 sm:hover:bg-secondary py-2 mx-2 rounded-md'
             onClick={handleMenu}
           >
             <FontAwesomeIcon
@@ -65,19 +67,23 @@ const Navbar = () => {
             className='size-4 text-black pl-4 border-l-2 border-gray-800'
           />
         </div>
-        <div className='flex space-x-8 items-center pr-6'>
+        <div className='flex space-x-4 items-center'>
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
-            className='size-5 text-primary_text sm:hidden'
+            className='size-4 text-primary_text sm:hidden'
             onClick={handleSearchBar}
           />
-          <FontAwesomeIcon
-            icon={faUser}
-            className='size-5 sm:hidden text-primary_text'
-          />
-          <h3 className='text-primary_text hover:bg-secondary px-3 py-2 cursor-pointer rounded-md font-medium max-sm:hidden'>
-            Sign In
-          </h3>
+
+          <Link href={"/login"}>
+            <h3 className='text-primary_text text-sm hover:bg-secondary px-2  py-2 cursor-pointer rounded-md font-medium'>
+              Sign In
+            </h3>
+          </Link>
+          <div className='flex items-center text-base bg-secondary px-3 py-2 space-x-2  text-white cursor-pointer rounded-md'>
+            {/* Need to implement multiple languages*/}
+            <p>EN</p>
+            <FontAwesomeIcon icon={faCaretDown} className='size-4' />
+          </div>
         </div>
       </div>
       {active && <MobileSearchBar handleSearchBar={handleSearchBar} />}
@@ -132,7 +138,7 @@ const Menu = ({ handleMenu }: { handleMenu: () => void }) => {
                 </div>
                 <FontAwesomeIcon
                   icon={faChevronDown}
-                  className={`size-3 text-primary_text${
+                  className={`size-3 text-primary_text ${
                     activeItem === menu.id ? "rotate-180" : "rotate-0"
                   } transition-transform duration-100 ease-in`}
                 />
@@ -152,7 +158,7 @@ const Menu = ({ handleMenu }: { handleMenu: () => void }) => {
           ))}
         </div>
       </div>
-      <div className=' space-x-24 flex justify-center'>
+      <div className=' space-x-24 flex justify-center max-sm:hidden'>
         {menus.map((menu) => (
           <div className='text-primary_text'>
             <div className='flex items-center space-x-4'>
