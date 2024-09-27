@@ -34,7 +34,7 @@ const Navbar = () => {
 
   return (
     <div className='w-full relative z-10 h-screen '>
-      <div className='w-full h-14 flex justify-between items-center sm:justify-evenly '>
+      <div className='w-full h-14 flex justify-around items-center sm:justify-evenly '>
         <div className='flex sm:space-x-4 sm:flex-row-reverse items-center sm:pl-6'>
           <div
             className='flex items-center space-x-1 sm:px-4 px-2 sm:hover:bg-secondary py-2 mx-2 rounded-md'
@@ -86,8 +86,8 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      {active && <MobileSearchBar handleSearchBar={handleSearchBar} />}
-      {activeMenu && <Menu handleMenu={handleMenu} />}
+      <MobileSearchBar handleSearchBar={handleSearchBar} active={active} />
+      <Menu handleMenu={handleMenu} activeMenu={activeMenu}/>
       {activeMenu && (
         <div className='fixed sm:hidden inset-0 bg-gradient-to-tr from-transparent  to-slate-300/30' />
       )}
@@ -95,7 +95,12 @@ const Navbar = () => {
   );
 };
 
-const Menu = ({ handleMenu }: { handleMenu: () => void }) => {
+interface Menu {
+  activeMenu: boolean,
+  handleMenu: () => void;
+}
+
+const Menu = ({ handleMenu, activeMenu}: Menu) => {
   const { activeDown, activeItem, handleActiveDown } = useHandleChevronDown();
 
   const menus = [
@@ -113,7 +118,7 @@ const Menu = ({ handleMenu }: { handleMenu: () => void }) => {
     },
   ];
   return (
-    <section className='absolute z-30 left-0 max-sm:top-0 w-[60%] sm:w-full max-sm:min-h-screen sm:h-96  sm:bg-secondary bg-support_primary'>
+    <section className={`absolute z-30 ${activeMenu ? "left-0 translate-x-0" : "-left-full -translate-x-full"} transition-transform duration-150 ease-in max-sm:top-0 w-[60%] sm:w-full max-sm:min-h-screen sm:h-96  sm:bg-secondary bg-support_primary`}>
       <div>
         <div className='flex justify-end  sm:hidden items-center pr-4 h-16'>
           <FontAwesomeIcon
@@ -122,7 +127,7 @@ const Menu = ({ handleMenu }: { handleMenu: () => void }) => {
             onClick={handleMenu}
           />
         </div>
-        <div className='sm:hidden'>
+        <div className='sm:hidden '>
           {menus.map((menu: IMenu) => (
             <>
               <div
@@ -133,12 +138,12 @@ const Menu = ({ handleMenu }: { handleMenu: () => void }) => {
                 }`}
               >
                 <div className='flex items-center space-x-2'>
-                  <FontAwesomeIcon icon={menu.icon} className='size-4' />
-                  <h4 className=' font-medium '>{menu.title}</h4>
+                  <FontAwesomeIcon icon={menu.icon} className='size-4 text-white' />
+                  <h4 className=' font-medium text-white'>{menu.title}</h4>
                 </div>
                 <FontAwesomeIcon
                   icon={faChevronDown}
-                  className={`size-3 text-primary_text ${
+                  className={`size-3 text-support_primary ${
                     activeItem === menu.id ? "rotate-180" : "rotate-0"
                   } transition-transform duration-100 ease-in`}
                 />
@@ -161,7 +166,7 @@ const Menu = ({ handleMenu }: { handleMenu: () => void }) => {
       <div className=' space-x-24 flex justify-center max-sm:hidden'>
         {menus.map((menu) => (
           <div className='text-primary_text'>
-            <div className='flex items-center space-x-4'>
+            <div className='flex items-center space-x-4 '>
               <FontAwesomeIcon
                 icon={menu.icon}
                 className='size-5 text-primary'
@@ -180,24 +185,28 @@ const Menu = ({ handleMenu }: { handleMenu: () => void }) => {
   );
 };
 
+interface MobileSearchBar {
+  handleSearchBar: () => void;
+  active: boolean
+}
+
 const MobileSearchBar = ({
   handleSearchBar,
-}: {
-  handleSearchBar: () => void;
-}) => {
+  active
+}: MobileSearchBar) => {
   return (
     <div
-      className={`w-full  flex flex-col justify-center  items-center absolute top-0 z-20  bg-secondary`}
+      className={`w-full  flex flex-col justify-center  items-center absolute ${active ? "top-0 translate-y-0" : "-top-full -translate-y-full"} transition-transform duration-150 ease-in z-20  bg-secondary`}
     >
       <div className='w-full h-14 flex justify-evenly items-center'>
         <input
           type='text'
-          className='h-8 w-[80%]  outline-none pl-2 text-lg bg-secondary placeholder:text-gray-700  text-primary_text text-[1rem] font-medium'
+          className='h-8 w-[80%]  outline-none pl-2 text-lg bg-secondary placeholder:text-gray-400  text-support_primary text-[1rem] font-medium'
           placeholder='Search'
         />
         <FontAwesomeIcon
           icon={faX}
-          className='size-4 text-primary_text'
+          className='size-4 text-support_primary'
           onClick={handleSearchBar}
         />
       </div>

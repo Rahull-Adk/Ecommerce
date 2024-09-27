@@ -15,8 +15,8 @@ const Input = (props: IInput) => {
   const { label, labelicon, icon, disclaimer, valid } = props;
 
   return (
-    <section className='w-[90%] text-black '>
-      <div className='flex items-center w-full h-10 rounded-sm bg-white px-3'>
+    <section className='w-[90%] flex justify-center text-black '>
+      <div className='flex items-center w-[22rem] h-10 rounded-sm bg-white px-3'>
         <FontAwesomeIcon icon={labelicon} className='size-4 mr-4' />
         <input
           type={label.toLowerCase()}
