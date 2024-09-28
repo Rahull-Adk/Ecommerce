@@ -15,12 +15,15 @@ import React, { useEffect, useState } from "react";
 import { emailRegex, passwordRegex } from "@/src/utils/storage";
 import { useHandleValidInput } from "@/src/hooks/useHandleValidInput";
 import useFormData from "@/src/hooks/useFormData";
+import { useHandleCurrent } from "@/src/hooks/useHandleCurrent";
 
 const page = () => {
   const { formData, handleInputChange, submitForm } = useFormData({
     email: "",
     password: "",
   });
+
+  const { currentTraget, handleCurrentTarget } = useHandleCurrent();
 
   const email = formData["email"];
   const password = formData["password"];
@@ -41,7 +44,7 @@ const page = () => {
       label: "Email",
       icon: emailValid ? faCircleCheck : faCircleExclamation,
       labelicon: faEnvelope,
-      disclaimer: "Error",
+      disclaimer: null,
       valid: emailValid,
       value: email,
     },
@@ -49,7 +52,7 @@ const page = () => {
       label: "Password",
       labelicon: faKey,
       icon: passwordValid ? faCircleCheck : faCircleExclamation,
-      disclaimer: "Error",
+      disclaimer: null,
       valid: passwordValid,
       value: password,
     },
@@ -57,10 +60,10 @@ const page = () => {
 
   return (
     <FormContainer>
-      <Title text='Login' />
+      <Title text="Login" />
       <form
         onSubmit={submitForm}
-        className='space-y-4 w-full flex flex-col justify-center items-center'
+        className="space-y-4 w-full flex flex-col justify-center items-center"
       >
         {login.map((form, i) => (
           <Input
@@ -75,21 +78,21 @@ const page = () => {
           />
         ))}
       </form>
-      <div id='checkbox' className='flex justify-between w-[90%]'>
-        <div className='space-x-1'>
-          <input type='checkbox' id='login' />
-          <label className='text-sm' htmlFor='login'>
+      <div id="checkbox" className="flex justify-between w-[90%]">
+        <div className="space-x-1">
+          <input type="checkbox" id="login" />
+          <label className="text-sm" htmlFor="login">
             Remember me
           </label>
         </div>
-        <a className='text-sm text-blue-500 underline'>Forget password?</a>
+        <a className="text-sm text-blue-500 underline">Forget password?</a>
       </div>
       <Button text={"Submit"} />
-      <p className='text-sm pt-4'>
+      <p className="text-sm pt-4">
         Don't have an accout?
         <Link
           href={"/register"}
-          className='cursor-pointer underline text-blue-500'
+          className="cursor-pointer underline text-blue-500"
         >
           Register
         </Link>
@@ -99,7 +102,7 @@ const page = () => {
 };
 
 export const Title = ({ text }: { text: string }) => {
-  return <div className='font-semibold text-4xl '>{text}</div>;
+  return <div className="font-semibold text-4xl ">{text}</div>;
 };
 
 export default page;
