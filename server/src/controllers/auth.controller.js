@@ -43,6 +43,7 @@ export const register = async (req, res) => {
   }
 };
 
+// Login Route
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -76,6 +77,7 @@ export const login = async (req, res) => {
   }
 };
 
+// Logout Route
 export const logout = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,

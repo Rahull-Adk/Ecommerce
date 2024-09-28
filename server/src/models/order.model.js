@@ -20,6 +20,11 @@ const orderSchema = new Schema(
         },
       },
     ],
+    status: {
+      type: String,
+      enum: ["pending", "shipped", "delivered"],
+      default: "pending",
+    },
   },
   { timestamps: true }
 );

@@ -35,30 +35,41 @@ This will run the server in development mode with nodemon.
 
 Routes
 Authentication
+
 POST /api/auth/register – Register a new user
 POST /api/auth/login – Log in a user
 POST /api/auth/logout – Log out a user (clears token)
+
 User Management
+
 GET /api/users/profile – Get user profile (Protected)
 PUT /api/users/profile – Update user profile (Protected)
 GET /api/users/:id – View other users' profiles (Public)
+
 Products
+
 GET /api/products – Get all products (Public)
 POST /api/products – Create a new product (Admin only)
 GET /api/products/:id – Get product by ID (Public)
 PUT /api/products/:id – Update product by ID (Admin only)
 DELETE /api/products/:id – Delete product by ID (Admin only)
+
 Cart
+
 GET /api/cart – Get user's cart (Protected)
 POST /api/cart – Add items to cart (Protected)
 PUT /api/cart – Update items in cart (Protected)
 DELETE /api/cart/:id – Remove item from cart (Protected)
+
 Orders
+
 GET /api/orders – Get all user orders (Protected)
 POST /api/orders – Place a new order (Protected)
 GET /api/orders/:id – Get order by ID (Protected)
 PUT /api/orders/:id – Update order status (Admin only)
+
 Admin
+
 GET /api/admin/users – Get all users (Admin only)
 GET /api/admin/orders – Get all orders (Admin only)
 License
