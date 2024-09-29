@@ -36,6 +36,19 @@ export async function getAllProducts(query?: number) {
   }
 }
 
+// for product detail component
+export async function getSpecificProducts(id: string) {
+  try {
+    const url = buildURL(`products/${id}`);
+
+    const products = await axios.get<IProducts>(url);
+
+    return products.data;
+  } catch (err) {
+    console.log("Fetching product failed!");
+  }
+}
+
 export async function getCategories() {
   try {
     const url = buildURL(`products/categories`);
