@@ -34,9 +34,15 @@ const Hero = () => {
                     <h1 className="text-xl font-bold ">Best Sale</h1>
                     <a className="text-sm text-blue-600 hover:underline hover: cursor-pointer   ">See More</a>
                 </div>
+<<<<<<< Updated upstream
                 <div className="grid md:grid-cols-4 grid-cols-2 gap-2">
                     {data?.map((datas) => (
                         <Item id={datas.id} image={datas.image} price={datas.price} title={datas.title} rate={datas.rating.rate} />
+=======
+                <div className="grid md:grid-cols-3 grid-cols-2 gap-2">
+                    {data?.slice(0, 3).map((datas, i) => (
+                        <Item key={i} id={datas.id} image={datas.image} price={datas.price} title={datas.title} rate={datas.rating.rate} />
+>>>>>>> Stashed changes
                     ))}
                 </div>
 
@@ -65,8 +71,37 @@ const Categories = ({ children }: { children: ReactNode }) => {
 
 const Advertise = () => {
     return (
+<<<<<<< Updated upstream
         <div className="flex flex-col justify-center items-center w-full lg:w-[70rem] h-64 rounded-md bg-gray-100">
             <h1>Advertisement</h1>
+=======
+        <div className="relative w-full h-96 flex flex-col items-center justify-center rounded-md border">
+            <div className="overflow-hidden">
+                <div
+                    className="flex transition-transform duration-300 ease-in"
+                    style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                >
+                    {advertisements.map((text, i) => (
+                        <div key={i} id={i.toString()} className="min-w-full flex justify-center items-center">
+                            <img src={text.url} className="h-80 w-auto" />
+                            <h1 className="uppercase text-4xl italic font-semibold underline">{text.label}</h1>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className="flex space-x-3 h-20 items-center">
+                {advertisements.map((a, i) => (
+                    <div className={`p-[5px] cursor-pointer rounded-full  ${currentSlide === i ? "bg-primary" : "bg-black"}`} onClick={() => setCurrentSlide(i)} />
+                ))}
+            </div>
+            <button onClick={prevSlide} className="absolute left-4 items-center top-1/2 transform -translate-y-1/2 p-2 text-white">
+
+                <FontAwesomeIcon icon={faArrowLeft} className="size-4 text-primary" />
+            </button>
+            <button onClick={nextSlide} className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 text-white">
+                <FontAwesomeIcon icon={faArrowRight} className="size-4 text-primary" />
+            </button>
+>>>>>>> Stashed changes
         </div>
     )
 }
