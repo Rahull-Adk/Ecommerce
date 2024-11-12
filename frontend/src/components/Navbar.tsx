@@ -84,7 +84,7 @@ const Login = () => {
     <>
       {isLogin ?
         <Avatar />
-        : <Link href={"/login"}>
+        : <Link href={"/api/auth/login"}>
           <FontAwesomeIcon icon={faUser} className="size-6 text-primary" />
         </Link>}
     </>
