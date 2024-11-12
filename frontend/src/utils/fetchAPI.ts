@@ -23,14 +23,15 @@ const buildURL = (endpoint: string, limit?: number): string => {
   return url.toString();
 };
 
-export async function getAllProducts(query?: number) {
+export async function getAllProducts(limit?: number) {
   try {
-    const url = buildURL("products", query);
+    const url = buildURL("products", limit);
 
     // fetch the url using axios library
     const products = await axios.get<IProducts[]>(url);
 
     return products.data;
+    
   } catch (error) {
     throw error;
   }

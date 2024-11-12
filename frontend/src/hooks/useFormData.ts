@@ -13,11 +13,8 @@ const useFormData = (initialValues: { [key: string]: string }) => {
     });
   };
 
-  function submitForm(formData: any) {
-    // api
-  }
 
-  return { formData, handleInputChange, submitForm };
+  return { formData, handleInputChange };
 };
 
 export default useFormData;

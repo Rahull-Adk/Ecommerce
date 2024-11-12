@@ -3,6 +3,11 @@ import React, { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBagShopping,
+  faBars,
+  faBell,
+  faCartShopping,
+  faMagnifyingGlass,
+  faSun,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { useHandleMenu } from "../hooks/useHandleMenu";
@@ -23,19 +28,21 @@ const Navbar = () => {
 
   const [activeNavbar, setActiveNavbar] = useState<number>(1);
 
+  const Icons = [<DarkMode />, <MagnificationGlass />, <Bell />, <Cart_shopping />, <Login />]
+
 
   return (
 
     <NavbarContext.Provider value={{ activeNavbar, setActiveNavbar }} >
-      <div className="w-full relative z-10 h-16 flex justify-center">
+      <div className="w-full relative h-16 flex justify-center bg-support_primary">
 
-        <div className="w-full h-14 flex justify-between items-center px-12">
-          <Logo handleMenu={handleMenu} />
+        <div className="w-full h-16 flex justify-around max-sm:justify-between items-center px-12">
+          <Logo />
+          <FontAwesomeIcon icon={faBars} className="size-6 sm:hidden" />
           <NavbarItem />
-          {/* For Mobile MagnifyingGlass Icon */}
-          <div className="flex space-x-8  items-center">
-            <Basket />
-            <Login />
+
+          <div className="flex space-x-9 items-center max-sm:hidden">
+            {Icons.map((icon) => icon)}
           </div>
         </div>
         {activeMenu && (
@@ -52,11 +59,7 @@ const NavbarItem = () => {
     id: 1, label: 'Home'
   }, {
     id: 2, label: 'Products'
-  }, {
-    id: 3, label: 'About'
-  }, {
-    id: 4, label: 'Contact'
-  },]
+  }]
 
   const context = useContext(NavbarContext);
 
@@ -66,7 +69,7 @@ const NavbarItem = () => {
   const { activeNavbar, setActiveNavbar } = context;
 
   return (
-    <div className={`space-x-10 flex`}>
+    <div className={`space-x-10 flex max-sm:hidden`}>
       {items.map((item) => (
         <h1 id={item.id.toString()} onClick={() => setActiveNavbar(item.id)} className={`${activeNavbar === item.id ? "text-primary" : "text-black"} hover:cursor-pointer`}>{item.label}</h1>
       ))}
@@ -82,7 +85,7 @@ const Login = () => {
       {isLogin ?
         <Avatar />
         : <Link href={"/login"}>
-          <FontAwesomeIcon icon={faUser} className="size-6 text-gray-600" />
+          <FontAwesomeIcon icon={faUser} className="size-6 text-primary" />
         </Link>}
     </>
   )
@@ -107,31 +110,59 @@ const Avatar = () => {
   )
 }
 
-const Basket = () => {
-  const [isHover, setIsHover] = useState<boolean>(false);
-  function handleHover() {
-    setIsHover(!isHover)
-  }
+const Cart_shopping = () => {
+
   return (
     <div className="relative">
       <FontAwesomeIcon
-        icon={faBagShopping}
-        onMouseLeave={handleHover}
-        onMouseEnter={handleHover}
-        className="size-6 text-gray-600 "
+        icon={faCartShopping}
+        className="size-6 text-primary "
       />
-      {isHover &&
-        <h1 className="py-1 px-2 rounded-sm bg-gray-300 absolute top-6 text-xs -left-4">Basket</h1>
-      }
+    </div>
+  )
+}
+const DarkMode = () => {
+
+  return (
+    <div className="relative">
+      <FontAwesomeIcon
+        icon={faSun}
+        className="size-6 text-primary "
+      />
     </div>
   )
 }
 
-const Logo = ({ handleMenu }: { handleMenu: () => void }) => {
+const MagnificationGlass = () => {
+
+  return (
+    <div className="relative">
+      <FontAwesomeIcon
+        icon={faMagnifyingGlass}
+        className="size-6 text-primary "
+      />
+    </div>
+  )
+}
+
+
+const Bell = () => {
+
+  return (
+    <div className="relative">
+      <FontAwesomeIcon
+        icon={faBell}
+        className="size-6 text-primary "
+      />
+    </div>
+  )
+}
+
+const Logo = () => {
   return (
     <div className="flex sm:space-x-4 sm:flex-row-reverse items-center ">
 
-      <h1 className={`font-bold text-3xl text-primary ${poppins.className} italic`}>LOGO</h1>
+      <h1 className={`font-bold text-4xl text-primary ${poppins.className} italic`}>LOGO</h1>
     </div>
   )
 }

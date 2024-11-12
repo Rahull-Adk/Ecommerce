@@ -9,7 +9,7 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
-import { Title } from "../login/page";
+import { Facebook, Google, Spacer, Title } from "../login/page";
 import Button from "@/src/components/Button";
 import Link from "next/link";
 import Input from "@/src/components/Input";
@@ -17,9 +17,10 @@ import useFormData from "@/src/hooks/useFormData";
 import { emailRegex, passwordRegex, usernameRegex } from "@/src/utils/storage";
 import { useHandleValidInput } from "@/src/hooks/useHandleValidInput";
 import { useHandleCurrent } from "@/src/hooks/useHandleCurrent";
+import { register } from "@/src/utils/auth0";
 
 const page = () => {
-  const { formData, handleInputChange, submitForm } = useFormData({
+  const { formData, handleInputChange } = useFormData({
     email: "",
     username: "",
     password: "",
@@ -46,7 +47,7 @@ const page = () => {
     }
   }, [email, password, fullname, username]);
 
-  const register = [
+  const registers = [
     {
       label: "Email",
       icon: emailValid ? faCircleCheck : faCircleExclamation,
@@ -87,43 +88,57 @@ const page = () => {
     },
   ];
 
+  const handleRegister = async (e: any) => {
+    e.preventDefault();
+    try {
+      console.log("Register function is working!")
+      await register(formData["email"], formData["password"], formData["username"]);
+      window.location.href = '/login';
+
+    } catch (err) {
+      console.log("Registration Failed!")
+    }
+  };
+
   return (
     <FormContainer>
-      <Title text="Register" />
+      <Title text="Register New Account" />
       <form
-        onSubmit={submitForm}
+        onSubmit={handleRegister}
         className="space-y-4 w-full flex flex-col justify-center items-center"
       >
-        {register.map((form, i) => (
+        {registers.map((form, i) => (
           <Input
             valid={form.valid}
             value={formData[form.label]}
             onChange={handleInputChange}
             onClick={() => handleCurrentTarget(form.label)}
             key={i}
-            label={form.label.toLowerCase()}
+            label={form.label}
             labelicon={form.labelicon}
-            icon={form.icon}
             disclaimer={form.disclaimer}
             autoComplete="off"
           />
         ))}
-      </form>
-      <div id="checkbox" className="flex justify-between w-[90%]">
-        <div className="space-x-1 items-center">
-          <input type="checkbox" id="register" />
-          <label className="text-xs text-gray-400" htmlFor="register">
-            I accept{" "}
-            <strong className="text-white">
-              Terms of Service and Privacy Policy.
-            </strong>
-          </label>
+        <div id="checkbox" className="flex justify-between w-[22rem]">
+          <div className="space-x-1 items-center">
+            <input type="checkbox" id="register" />
+            <label className="text-xs text-gray-400" htmlFor="register">
+              I accept{" "}
+              <strong className="text-white">
+                Terms of Service and Privacy Policy.
+              </strong>
+            </label>
+          </div>
         </div>
-      </div>
-      <Button text={"Submit"} />
+        <Button text={"Submit"} />
+      </form>
+      <Spacer />
+      <Google />
+      <Facebook />
       <p className="text-sm pt-4">
         have an accout?
-        <Link href="/login" className="underline text-blue-500">
+        <Link href="/login" className="hover:underline text-darkmode_primary">
           {" "}
           Sign In
         </Link>

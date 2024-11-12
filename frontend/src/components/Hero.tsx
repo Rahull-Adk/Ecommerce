@@ -18,32 +18,25 @@ const roboto = Roboto_Condensed({
 
 const Hero = () => {
     const [data, setData] = useState<IProducts[]>();
-    const [category, setCategory] = useState<any>([]);
-    const [electronics, setElectronic] = useState<IProducts[]>([]);
+    const [category, setCategory] = useState<any>();
+
 
     // Fetch All Products and Categories
     useEffect(() => {
+
         const fetchData = async () => {
-            await Promise.all([getAllProducts(), getCategories()]).then((datas) => {
-                setData(datas[0]);
-                setCategory(datas[1]);
-            })
+            const datas = await getAllProducts();
+            const categorys = await getCategories();
+            setData(datas);
+            setCategory(categorys);
         };
         fetchData();
+
     }, []);
-
-    // Filter Electronic Products
-    useEffect(() => {
-        if (data) {
-            const filteredProduct = data.filter((datas) => datas.category === category[0]);
-            setElectronic(filteredProduct);
-        }
-    }, [data])
-
 
     return (
         <Container>
-
+            <HeroBanner data={data} />
             <Advertise />
             <Items>
                 <div className="flex justify-center items-center">
@@ -114,7 +107,7 @@ const About = () => {
 export const Container = ({ children }: { children: ReactNode }) => {
     return (
         <div className="w-full flex justify-center">
-            <div className="w-full lg:w-[70rem] space-y-8">
+            <div className="w-full sm:w-[75%] space-y-8">
                 {children}
             </div>
         </div>
@@ -125,6 +118,36 @@ const Categories = ({ children }: { children: ReactNode }) => {
     return (
         <div className="flex space-x-8 uppercase  justify-center my-4">
             {children}
+        </div>
+    )
+}
+
+const HeroBanner = ({ data }: { data?: IProducts[] }) => {
+
+    if (!data) {
+        return (
+            <h1>Data is not receive yet.</h1>
+        )
+    }
+    return (
+        <div className="grid grid-rows-1 grid-flow-col text-center bg-white">
+            <div className="row-span-3 flex flex-col  border-r-2 border-primary justify-around items-center">
+                <Image src={data[0].image} alt={data[0].title} width={100} height={100} className="aspect-auto h-56 w-auto" />
+                <h1 className={`text-6xl w-80 font-semibold italic ${roboto.className}`}>Elevate Your Everyday</h1>
+            </div>
+            <div className="row-span-3 flex flex-col-reverse  border-r-2 border-primary justify-around items-center ">
+                <Image src={data[1].image} alt={data[1].title} width={100} height={100} className="aspect-auto h-56 w-auto" />
+                <h1 className={`text-6xl w-80 font-semibold italic ${roboto.className}`}>Unlock VIP Perks</h1>
+            </div>
+            <div>
+                <div className="row-span-2 flex justify-center items-center  border-b-2 border-primary">
+                    <Image src={data[2].image} alt={data[2].title} width={100} height={100} className="aspect-auto h-56 w-auto m-5" />
+                </div>
+                <div className="row-span-2 flex justify-center items-center">
+                    <Image src={data[3].image} alt={data[3].title} width={100} height={100} className="aspect-auto h-56 w-auto m-5" />
+
+                </div>
+            </div>
         </div>
     )
 }
@@ -143,7 +166,7 @@ const Advertise = () => {
 
     const advertisements = [{ url: '/svg_PNG/big-shopping-sale.svg', label: 'Promotions' }, { url: '/svg_PNG/sales.svg', label: 'Flash Sales' }, { url: '/svg_PNG/discount.svg', label: 'Discounts' }]
     return (
-        <div className="relative w-full h-80 flex flex-col items-center justify-center rounded-md border">
+        <div className="relative w-full h-80 flex flex-col items-center justify-center rounded-md ">
             <div className="overflow-hidden">
                 <div
                     className="flex transition-transform duration-300"
@@ -157,7 +180,7 @@ const Advertise = () => {
                     ))}
                 </div>
             </div>
-            <div className="flex space-x-3 h-20 items-center">
+            <div className="flex space-x-3 h-20 items-center mt-5">
                 {advertisements.map((a, i) => (
                     <div className={`p-[5px] cursor-pointer rounded-full  ${currentSlide === i ? "bg-primary" : "bg-black"}`} onClick={() => setCurrentSlide(i)} />
                 ))}
@@ -195,10 +218,18 @@ export const Item = ({ id, image, title, price, rate }: IItem) => {
             <Link href={`/item/${id.toString()}`}>
                 <div className="w-full space-y-4 mt-4 flex flex-col justify-around items-center">
                     <Image src={image} width={80} height={70} alt={title} className="aspect-auto w-auto md:h-60 hover:scale-105 transition-all duration-100 ease-in h-40 flex justify-center" />
-                    <div className="space-y-2 w-full py-2 border-t flex flex-col justify-center items-center">
-
-                        <h1 className="text-sm h-6 overflow-ellipsis w-44  overflow-hidden">{title}</h1>
-                        <p className={`${roboto.className} font-semibold text-2xl`}>${price}</p>
+                    <div className="py-4 w-full space-y-4 border-t flex flex-col justify-center items-center">
+                        <div className="flex justify-around w-full">
+                            <h1 className=" overflow-ellipsis w-40 h-6 text-start  overflow-hidden font-semibold">{title}</h1>
+                            <div className="flex items-center">
+                                <FontAwesomeIcon icon={faStar} className="size-4 text-yellow-500" />
+                                <p className="text-gray-500 pl-1">{rate.toString().slice(0, 1)}</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-around w-full">
+                            <p className={`${roboto.className} font-bold text-3xl text-primary`}>${price}</p>
+                            <button className="w-32 h-12 px-2 py-1 bg-darkmode_support_primary text-white rounded-sm font-bold">Buy Now</button>
+                        </div>
 
                     </div>
                 </div>

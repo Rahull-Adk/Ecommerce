@@ -10,11 +10,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#E64833",
+        primary: "#6E54B5",
         secondary: "#003135",
-        support_primary: "#ffffff",
+        support_primary: "#F5F5F5",
         primary_text: "#000000",
-        accent: "#ff6600",
+        darkmode_support_primary: "#2B2738",
+        darkmode_support_background: "#3B364B",
+        darkmode_primary: "#C5ADF7",
+        text_for_form: "#949191"
       },
     },
   },
