@@ -5,7 +5,6 @@ import React from "react";
 export interface IInput extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   labelicon: IconProp;
-
   disclaimer: string | null;
   valid: boolean;
   value: string;

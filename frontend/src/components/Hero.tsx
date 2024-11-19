@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { getAllProducts, getCategories, IProducts } from "../utils/fetchAPI";
 import Image from "next/image";
 import { faArrowLeft, faArrowRight, faDollarSign, faS, faStar } from "@fortawesome/free-solid-svg-icons";
@@ -8,6 +8,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { Roboto_Condensed } from "next/font/google";
 import { poppins } from "./Navbar";
+import SkeletonHeroBanner from "./SkeletonHeroBanner";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../counter/cartSlice";
 
 const roboto = Roboto_Condensed({
     subsets: ["latin"], // You can also add 'latin-ext' or other subsets if needed
@@ -36,20 +39,25 @@ const Hero = () => {
 
     return (
         <Container>
-            <HeroBanner data={data} />
-            <Advertise />
-            <Items>
-                <div className="flex justify-center items-center">
-                    <h1 className={`${poppins.className} text-4xl font-medium`}>Our Products</h1>
-                </div>
-                <div className="grid md:grid-cols-3 grid-cols-2 gap-2">
-                    {data?.slice(0, 6).map((datas, i) => (
-                        <Item key={i} id={datas.id} image={datas.image} price={datas.price} title={datas.title} rate={datas.rating.rate} />
-                    ))}
-                </div>
-            </Items>
-            <About />
-            <Contact />
+            <div className="max-sm:hidden">
+                {
+                    data ? <HeroBanner data={data} /> : <SkeletonHeroBanner />
+                }
+
+                <Advertise />
+                <Items>
+                    <div className="flex justify-center items-center">
+                        <h1 className={`${poppins.className} text-4xl font-medium`}>Our Products</h1>
+                    </div>
+                    <div className="grid md:grid-cols-3 grid-cols-2 gap-2">
+                        {data?.slice(0, 6).map((datas, i) => (
+                            <Item key={i} id={datas.id} image={datas.image} price={datas.price} title={datas.title} rate={datas.rating.rate} />
+                        ))}
+                    </div>
+                </Items>
+                <About />
+                <Contact />
+            </div>
         </Container>
     )
 };
@@ -88,13 +96,13 @@ const About = () => {
     return (
         <div className="flex flex-col justify-center items-center w-full">
             <h1 className="text-4xl font-medium">About Us</h1>
-            <div className="space-y-16 my-4">
+            <div className="space-y-16 my-16">
                 {founders.map((f) => (
-                    <div id={f.id.toString()} className={`${f.id % 2 === 0 ? "flex" : "flex flex-row-reverse"}  gap-16 space-y-4 items-center`}>
+                    <div id={f.id.toString()} className={`${f.id % 2 === 0 ? "flex" : "flex flex-row-reverse"}  gap-36 space-y-4 items-center`}>
                         <div className="h-96 w-96 bg-black" />
-                        <div className="space-y-4">
-                            <h2 className="text-2xl font-semibold">{f.role}</h2>
-                            <h4 className="w-[20rem]">{f.description}</h4>
+                        <div className="space-y-8">
+                            <h2 className="text-3xl font-medium text-center">{f.role}</h2>
+                            <h4 className="w-[30rem] text-sm text-center">{f.description}</h4>
                         </div>
                     </div>
                 )
@@ -122,13 +130,10 @@ const Categories = ({ children }: { children: ReactNode }) => {
     )
 }
 
-const HeroBanner = ({ data }: { data?: IProducts[] }) => {
+const HeroBanner = ({ data }: { data: IProducts[] }) => {
 
-    if (!data) {
-        return (
-            <h1>Data is not receive yet.</h1>
-        )
-    }
+
+
     return (
         <div className="grid grid-rows-1 grid-flow-col text-center bg-white">
             <div className="row-span-3 flex flex-col  border-r-2 border-primary justify-around items-center">
@@ -213,27 +218,38 @@ interface IItem {
 }
 
 export const Item = ({ id, image, title, price, rate }: IItem) => {
+
+    const dispatch = useDispatch();
+
+    const handleAddToCart = () => {
+        dispatch(addToCart({
+            id: id,
+            name: title,
+            price: price,
+            quantity: 1
+        }));
+    };
     return (
         <section className="w-auto md:h-auto text-center border h-auto bg-white rounded-sm">
-            <Link href={`/item/${id.toString()}`}>
-                <div className="w-full space-y-4 mt-4 flex flex-col justify-around items-center">
+            <div className="w-full space-y-4 mt-4 flex flex-col justify-around items-center">
+                <Link href={`/item/${id.toString()}`}>
                     <Image src={image} width={80} height={70} alt={title} className="aspect-auto w-auto md:h-60 hover:scale-105 transition-all duration-100 ease-in h-40 flex justify-center" />
-                    <div className="py-4 w-full space-y-4 border-t flex flex-col justify-center items-center">
-                        <div className="flex justify-around w-full">
-                            <h1 className=" overflow-ellipsis w-40 h-6 text-start  overflow-hidden font-semibold">{title}</h1>
-                            <div className="flex items-center">
-                                <FontAwesomeIcon icon={faStar} className="size-4 text-yellow-500" />
-                                <p className="text-gray-500 pl-1">{rate.toString().slice(0, 1)}</p>
-                            </div>
+                </Link>
+                <div className="py-4 w-full space-y-4 border-t flex flex-col justify-center items-center">
+                    <div className="flex justify-between px-5 w-full">
+                        <h1 className=" overflow-ellipsis w-40 h-6 text-start  overflow-hidden font-medium">{title}</h1>
+                        <div className="flex items-center">
+                            <FontAwesomeIcon icon={faStar} className="size-4 text-yellow-500" />
+                            <p className="text-gray-500 pl-1">{rate.toString().slice(0, 1)}</p>
                         </div>
-                        <div className="flex items-center justify-around w-full">
-                            <p className={`${roboto.className} font-bold text-3xl text-primary`}>${price}</p>
-                            <button className="w-32 h-12 px-2 py-1 bg-darkmode_support_primary text-white rounded-sm font-bold">Buy Now</button>
-                        </div>
-
+                    </div>
+                    <div className="flex items-center justify-between px-5 w-full">
+                        <p className={`${roboto.className} font-bold text-3xl text-primary`}>${price}</p>
+                        <button onClick={handleAddToCart} className="w-32 h-12 px-2 py-1 bg-darkmode_support_primary text-white rounded-md font-bold">Buy Now</button>
                     </div>
                 </div>
-            </Link>
+            </div>
+
         </section>
     )
 }

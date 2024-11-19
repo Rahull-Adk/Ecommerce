@@ -2,8 +2,6 @@
 import React, { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBagShopping,
-  faBars,
   faBell,
   faCartShopping,
   faMagnifyingGlass,
@@ -15,6 +13,9 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
 import { NavbarContext } from "../context/navbarContext";
+import Bars from "./Bars";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../counter/store";
 
 export const poppins = Poppins({
   subsets: ["latin"], // You can also add 'latin-ext' or other subsets if needed
@@ -24,11 +25,11 @@ export const poppins = Poppins({
 })
 
 const Navbar = () => {
-  const { activeMenu, handleMenu } = useHandleMenu();
+
 
   const [activeNavbar, setActiveNavbar] = useState<number>(1);
 
-  const Icons = [<DarkMode />, <MagnificationGlass />, <Bell />, <Cart_shopping />, <Login />]
+  const Icons = [<Bell />, <Login />]
 
 
   return (
@@ -36,18 +37,21 @@ const Navbar = () => {
     <NavbarContext.Provider value={{ activeNavbar, setActiveNavbar }} >
       <div className="w-full relative h-16 flex justify-center bg-support_primary">
 
-        <div className="w-full h-16 flex justify-around max-sm:justify-between items-center px-12">
-          <Logo />
-          <FontAwesomeIcon icon={faBars} className="size-6 sm:hidden" />
-          <NavbarItem />
+        <div className="w-full h-16 flex sm:justify-around justify-between px-4 items-center ">
+          <div className="flex flex-row-reverse items-center gap-4 pl-4">
 
-          <div className="flex space-x-9 items-center max-sm:hidden">
-            {Icons.map((icon) => icon)}
+            <Logo />
+            <Bars />
+          </div>
+          <NavbarItem />
+          <div className="flex space-x-9">
+
+            <Cart_shopping />
+            <div className="flex space-x-9 items-center max-sm:hidden">
+              {Icons.map((icon) => icon)}
+            </div>
           </div>
         </div>
-        {activeMenu && (
-          <div className="fixed sm:hidden inset-0 bg-gradient-to-tr from-transparent  to-slate-300/30" />
-        )}
       </div>
     </NavbarContext.Provider>
   );
@@ -111,9 +115,12 @@ const Avatar = () => {
 }
 
 const Cart_shopping = () => {
+  const cart = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch();
 
   return (
     <div className="relative">
+      <div>{cart.totalQuantity}</div>
       <FontAwesomeIcon
         icon={faCartShopping}
         className="size-6 text-primary "

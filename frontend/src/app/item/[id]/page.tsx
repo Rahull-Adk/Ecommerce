@@ -17,8 +17,6 @@ const ItemDetailed = ({ params }: { params: { id: string } }) => {
     const [products, setProducts] = useState<IProducts[]>([]);
     const { id } = params;
 
-
-
     useEffect(() => {
         const fetchData = async () => {
             try {
